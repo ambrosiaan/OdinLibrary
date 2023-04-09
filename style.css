@@ -1,0 +1,139 @@
+:root {
+  --primary-color: #009688;
+  --primary-color-hover: #00796b;
+  --secondary-color: #ff9800;
+  --secondary-color-hover: #f57c00;
+  --background-color: #f9f9f9;
+  --white-color: #ffffff;
+  --input-border-color: #ccc;
+  --table-row-even: #eef2f2;
+  --table-row-hover: #dce3e3;
+  --font-color: #333;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--background-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+form {
+  background-color: var(--white-color);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  box-sizing: border-box;
+}
+
+label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="number"] {
+  width: 100%;
+  padding: 6px 10px;
+  margin-bottom: 15px;
+  border: 1px solid var(--input-border-color);
+  border-radius: 5px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+input[type="radio"] {
+  margin-right: 5px;
+}
+
+input[type="submit"] {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background-color: var(--primary-color);
+  color: var(--white-color);
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+input[type="submit"]:hover {
+  background-color: var(--primary-color-hover);
+}
+
+.radio-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 15px;
+}
+
+.radio-container input[type="radio"] {
+  margin-right: 5px;
+}
+
+.radio-container label {
+  margin-right: 15px;
+}
+
+#booksTable {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 800px;
+  margin-top: 30px;
+}
+
+#booksTable thead {
+  background-color: var(--primary-color);
+  color: var(--white-color);
+}
+
+#booksTable thead th,
+#booksTable tbody td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid var(--input-border-color);
+}
+
+#booksTable tbody tr:nth-child(even) {
+  background-color: var(--table-row-even);
+}
+
+#booksTable tbody tr:hover {
+  background-color: var(--table-row-hover);
+}
+
+#bookForm h2 {
+  font-size: 24px;
+  color: var(--font-color);
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.deleteButton {
+  background-color: var(--secondary-color);
+  color: var(--white-color);
+  border: none;
+  border-radius: 5px;
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.toggle-text {
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.toggle-text:hover {
+  background-color: rgba(0, 0, 255, 0.1);
+}
