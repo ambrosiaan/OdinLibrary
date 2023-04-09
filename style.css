@@ -25,7 +25,7 @@ body {
 
 form {
   background-color: var(--background-color);
-  padding: 30px;
+  padding: 10px;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 300px;
@@ -119,6 +119,10 @@ h2 {
   margin-bottom: 20px;
 }
 
+form > h2 {
+  margin-top: 0px;
+}
+
 .deleteButton {
   background-color: var(--secondary-color);
   color: var(--white-color);
@@ -174,22 +178,8 @@ h2 {
   align-items: center;
 }
 
+#showFormButton,
 .close {
-  color: var(--font-color);
-  align-self: flex-end;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: var(--primary-color);
-  text-decoration: none;
-  cursor: pointer;
-}
-
-#showFormButton {
   font-size: 24px;
   font-weight: bold;
   color: white;
@@ -206,6 +196,16 @@ h2 {
   transition: background-color 0.2s;
 }
 
-#showFormButton:hover {
+.close {
+  color: var(--font-color);
+  align-self: flex-end;
+  font-size: 28px;
+  font-weight: bold;
+  width: 30px;
+  height: 30px;
+}
+
+#showFormButton:hover,
+.close:hover {
   background-color: var(--primary-color-hover);
 }
