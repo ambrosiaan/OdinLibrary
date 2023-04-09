@@ -15,6 +15,24 @@ Book.prototype.toggleReadStatus = function toggleRead() {
   this.read = !this.read;
 };
 
+const showModalButton = document.getElementById("showFormButton");
+const formModal = document.getElementById("formModal");
+const closeModalButton = document.querySelector(".close");
+
+showModalButton.addEventListener("click", () => {
+  formModal.style.display = "block";
+});
+
+closeModalButton.addEventListener("click", () => {
+  formModal.style.display = "none";
+});
+
+window.addEventListener("click", (event) => {
+  if (event.target === formModal) {
+    formModal.style.display = "none";
+  }
+});
+
 function deleteRow(row) {
   const bookIndex = parseInt(row.getAttribute("data-id"), 10);
   myLibrary.splice(bookIndex, 1);
@@ -77,7 +95,7 @@ function addBookToLibrary(event) {
   const newBook = getBookFromForm();
   const bookIndex = addToLibrary(newBook);
   addBookToTable(newBook, bookIndex);
-  console.log(myLibrary);
+  formModal.style.display = "none";
 }
 
 document.addEventListener(
