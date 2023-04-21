@@ -1,7 +1,21 @@
-const myLibrary = [];
+class Library {
+  constructor(books = []) {
+    this.books = books;
+  }
 
-const bookForm = document.getElementById("bookForm");
-const tbody = document.querySelector("#booksTable tbody");
+  addToLibrary(book) {
+    this.books.push(book);
+    return this.books.length - 1;
+  }
+
+  deleteFromLibrary(bookIndex) {
+    this.books.splice(bookIndex, 1);
+  }
+
+  getBook(bookIndex) {
+    return this.books[bookIndex];
+  }
+}
 
 class Book {
   constructor(title, author, pages, read) {
@@ -16,6 +30,10 @@ class Book {
   }
 }
 
+const myLibrary = new Library();
+
+const bookForm = document.getElementById("bookForm");
+const tbody = document.querySelector("#booksTable tbody");
 const showModalButton = document.getElementById("showFormButton");
 const formModal = document.getElementById("formModal");
 const closeModalButton = document.querySelector(".close");
@@ -36,8 +54,7 @@ window.addEventListener("click", (event) => {
 
 function deleteRow(row) {
   const bookIndex = parseInt(row.getAttribute("data-id"), 10);
-  myLibrary.splice(bookIndex, 1);
-  console.dir(myLibrary);
+  myLibrary.deleteFromLibrary(bookIndex);
   row.remove();
 }
 
@@ -49,11 +66,6 @@ function getBookFromForm() {
     document.querySelector('input[name="read"]:checked').value === "true";
 
   return new Book(title, author, pages, read);
-}
-
-function addToLibrary(book) {
-  myLibrary.push(book);
-  return myLibrary.length - 1;
 }
 
 function createDeleteButton(row) {
@@ -95,7 +107,7 @@ function addBookToLibrary(event) {
   event.preventDefault();
 
   const newBook = getBookFromForm();
-  const bookIndex = addToLibrary(newBook);
+  const bookIndex = myLibrary.addToLibrary(newBook);
   addBookToTable(newBook, bookIndex);
   formModal.style.display = "none";
 }
