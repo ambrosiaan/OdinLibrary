@@ -3,17 +3,18 @@ const myLibrary = [];
 const bookForm = document.getElementById("bookForm");
 const tbody = document.querySelector("#booksTable tbody");
 
-function Book(title, author, pages, read) {
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.read = read;
-  return this;
-}
+class Book {
+  constructor(title, author, pages, read) {
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.read = read;
+  }
 
-Book.prototype.toggleReadStatus = function toggleRead() {
-  this.read = !this.read;
-};
+  toggleReadStatus() {
+    this.read = !this.read;
+  }
+}
 
 const showModalButton = document.getElementById("showFormButton");
 const formModal = document.getElementById("formModal");
@@ -36,6 +37,7 @@ window.addEventListener("click", (event) => {
 function deleteRow(row) {
   const bookIndex = parseInt(row.getAttribute("data-id"), 10);
   myLibrary.splice(bookIndex, 1);
+  console.dir(myLibrary);
   row.remove();
 }
 
