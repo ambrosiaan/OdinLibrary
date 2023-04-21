@@ -31,11 +31,16 @@ class Book {
 }
 
 class UI {
-  constructor(library, bookForm, bookTableBody) {
+  constructor(library) {
     this.library = library;
-    this.bookForm = bookForm;
-    this.bookTableBody = bookTableBody;
+    this.bookForm = document.getElementById("bookForm");
+    this.bookTableBody = document.querySelector("#booksTable tbody");
   }
+
+  resetForm() {
+    this.bookForm.reset();
+  }
+
   addBookToLibrary() {
     this.bookForm.addEventListener("submit", (event) => {
       event.preventDefault();
@@ -43,12 +48,13 @@ class UI {
       const newBook = this.getBookFromForm();
       const bookIndex = this.library.addToLibrary(newBook);
       this.addBookToTable(newBook, bookIndex);
+      this.resetForm();
       formModal.style.display = "none";
     });
   }
 
   addBookToTable(book, bookIndex) {
-    const newRow = tbody.insertRow(-1);
+    const newRow = this.bookTableBody.insertRow(-1);
     newRow.setAttribute("data-id", bookIndex);
 
     const titleCell = newRow.insertCell(0);
@@ -98,28 +104,34 @@ class UI {
   }
 }
 
-const bookForm = document.getElementById("bookForm");
-const tbody = document.querySelector("#booksTable tbody");
-const showModalButton = document.getElementById("showFormButton");
-const formModal = document.getElementById("formModal");
-const closeModalButton = document.querySelector(".close");
-
-showModalButton.addEventListener("click", () => {
-  formModal.style.display = "block";
-});
-
-closeModalButton.addEventListener("click", () => {
-  formModal.style.display = "none";
-});
-
-window.addEventListener("click", (event) => {
-  if (event.target === formModal) {
-    formModal.style.display = "none";
+class Modal {
+  constructor(modalWindowId, openButtonId, closeButtonClass) {
+    this.modalWindow = document.getElementById(modalWindowId);
+    this.openButton = document.getElementById(openButtonId);
+    this.closeButton = document.querySelector(`.${closeButtonClass}`);
+    this.init();
   }
-});
+  init() {
+    this.openButton.addEventListener("click", () => this.open());
+    this.closeButton.addEventListener("click", () => this.close());
+    window.addEventListener("click", (event) => {
+      if (event.target === this.modalWindow) {
+        this.close();
+      }
+    });
+  }
+
+  open() {
+    this.modalWindow.style.display = "block";
+  }
+  close() {
+    this.modalWindow.style.display = "none";
+  }
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   const myLibrary = new Library();
-  const ui = new UI(myLibrary, bookForm, tbody);
+  const ui = new UI(myLibrary);
+  const newBookModal = new Modal("formModal", "showFormButton", "close");
   ui.addBookToLibrary();
 });
