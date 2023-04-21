@@ -30,7 +30,73 @@ class Book {
   }
 }
 
-const myLibrary = new Library();
+class UI {
+  constructor(library, bookForm, bookTableBody) {
+    this.library = library;
+    this.bookForm = bookForm;
+    this.bookTableBody = bookTableBody;
+  }
+  addBookToLibrary() {
+    this.bookForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const newBook = this.getBookFromForm();
+      const bookIndex = this.library.addToLibrary(newBook);
+      this.addBookToTable(newBook, bookIndex);
+      formModal.style.display = "none";
+    });
+  }
+
+  addBookToTable(book, bookIndex) {
+    const newRow = tbody.insertRow(-1);
+    newRow.setAttribute("data-id", bookIndex);
+
+    const titleCell = newRow.insertCell(0);
+    const authorCell = newRow.insertCell(1);
+    const pagesCell = newRow.insertCell(2);
+    const readCell = newRow.insertCell(3);
+    const deleteCell = newRow.insertCell(4);
+
+    titleCell.innerText = book.title;
+    authorCell.innerText = book.author;
+    pagesCell.innerText = book.pages;
+    readCell.innerText = book.read ? "Yes" : "No";
+    readCell.classList.add("toggle-text");
+
+    readCell.addEventListener("click", () => {
+      book.toggleReadStatus();
+      readCell.innerText = book.read ? "Yes" : "No";
+    });
+
+    const deleteButton = this.createDeleteButton(newRow);
+    deleteCell.appendChild(deleteButton);
+  }
+
+  deleteRow(row) {
+    const bookIndex = parseInt(row.getAttribute("data-id"), 10);
+    this.library.deleteFromLibrary(bookIndex);
+    row.remove();
+  }
+
+  createDeleteButton(row) {
+    const deleteButton = document.createElement("button");
+    deleteButton.innerText = "Delete";
+    deleteButton.classList.add("deleteButton");
+    deleteButton.addEventListener("click", () => {
+      this.deleteRow(row);
+    });
+    return deleteButton;
+  }
+  getBookFromForm() {
+    const title = document.getElementById("title").value;
+    const author = document.getElementById("author").value;
+    const pages = document.getElementById("pages").value;
+    const read =
+      document.querySelector('input[name="read"]:checked').value === "true";
+
+    return new Book(title, author, pages, read);
+  }
+}
 
 const bookForm = document.getElementById("bookForm");
 const tbody = document.querySelector("#booksTable tbody");
@@ -52,67 +118,8 @@ window.addEventListener("click", (event) => {
   }
 });
 
-function deleteRow(row) {
-  const bookIndex = parseInt(row.getAttribute("data-id"), 10);
-  myLibrary.deleteFromLibrary(bookIndex);
-  row.remove();
-}
-
-function getBookFromForm() {
-  const title = document.getElementById("title").value;
-  const author = document.getElementById("author").value;
-  const pages = document.getElementById("pages").value;
-  const read =
-    document.querySelector('input[name="read"]:checked').value === "true";
-
-  return new Book(title, author, pages, read);
-}
-
-function createDeleteButton(row) {
-  const deleteButton = document.createElement("button");
-  deleteButton.innerText = "Delete";
-  deleteButton.classList.add("deleteButton");
-  deleteButton.addEventListener("click", () => {
-    deleteRow(row);
-  });
-
-  return deleteButton;
-}
-
-function addBookToTable(book, bookIndex) {
-  const newRow = tbody.insertRow(-1);
-  newRow.setAttribute("data-id", bookIndex);
-
-  const titleCell = newRow.insertCell(0);
-  const authorCell = newRow.insertCell(1);
-  const pagesCell = newRow.insertCell(2);
-  const readCell = newRow.insertCell(3);
-  const deleteCell = newRow.insertCell(4);
-
-  titleCell.innerText = book.title;
-  authorCell.innerText = book.author;
-  pagesCell.innerText = book.pages;
-  readCell.innerText = book.read ? "Yes" : "No";
-  readCell.classList.add("toggle-text");
-
-  readCell.addEventListener("click", () => {
-    book.toggleReadStatus();
-    readCell.innerText = book.read ? "Yes" : "No";
-  });
-
-  const deleteButton = createDeleteButton(newRow);
-  deleteCell.appendChild(deleteButton);
-}
-function addBookToLibrary(event) {
-  event.preventDefault();
-
-  const newBook = getBookFromForm();
-  const bookIndex = myLibrary.addToLibrary(newBook);
-  addBookToTable(newBook, bookIndex);
-  formModal.style.display = "none";
-}
-
-document.addEventListener(
-  "DOMContentLoaded",
-  bookForm.addEventListener("submit", addBookToLibrary)
-);
+document.addEventListener("DOMContentLoaded", () => {
+  const myLibrary = new Library();
+  const ui = new UI(myLibrary, bookForm, tbody);
+  ui.addBookToLibrary();
+});
